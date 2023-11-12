@@ -1,0 +1,33 @@
+FROM golang:1.20-alpine as build
+WORKDIR /backend/api
+
+ENV GOPATH $HOME/backend
+ENV PATH $PATH:$GOPATH/bin
+
+RUN apk add --no-cache git
+
+COPY api .
+
+RUN go install github.com/cosmtrek/air@latest
+RUN go install github.com/google/wire/cmd/wire@latest
+
+RUN go mod tidy
+RUN go build -o main main.go
+
+# マルチステージビルド
+FROM golang:1.20-alpine
+RUN apk upgrade --update && \
+    apk add --no-cache tzdata
+
+
+COPY --from=build /backend/api/main /backend/main
+COPY --from=build /backend/bin/air /usr/local/bin/
+COPY --from=build /backend/bin/wire /usr/local/bin/
+
+WORKDIR /backend/api
+
+# airを実行
+CMD ["air"]
+
+# Go run main.goを実行
+# CMD ["go", "run", "main.go"]
