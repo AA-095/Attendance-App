@@ -8,7 +8,7 @@ type AttendanceButtonsProps = {
   userStatus: string;
 };
 
-export const AttendanceButtons: React.FC<AttendanceButtonsProps> = ({
+const AttendanceButtons: React.FC<AttendanceButtonsProps> = ({
   userStatus: initialUserStatus,
 }) => {
   const [status, setStatus] = useState(initialUserStatus);
@@ -62,3 +62,5 @@ export const AttendanceButtons: React.FC<AttendanceButtonsProps> = ({
     </>
   );
 };
+
+export default AttendanceButtons;

@@ -18,10 +18,10 @@ func NewHistoryRepository(db *gorm.DB) repository.HistoryRepository {
 	}
 }
 
-func (s *HistoryRepoImpl) ReadAllHistory(useId int, year int) ([]model.Attendance, error) {
+func (s *HistoryRepoImpl) ReadAllHistory(userId int, year int) ([]model.Attendance, error) {
 	var activities []orm_model.Attendance
 	var res []model.Attendance
-	err := s.db.Where("userId = ?", useId).Where("year = ?", year).Find(&activities).Error
+	err := s.db.Where("id = ?", userId).Where("year = ?", year).Find(&activities).Error
 	
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (s *HistoryRepoImpl) ReadAllHistory(useId int, year int) ([]model.Attendanc
 func (s *HistoryRepoImpl) ReadHistoryByDate(useId int, date string) ([]model.Attendance, error) {
 	var activities []orm_model.Attendance
 	var res []model.Attendance
-	err := s.db.Where("userId = ?", useId).Where("date = ?", date).Find(&activities).Error
+	err := s.db.Where("id = ?", useId).Where("date = ?", date).Find(&activities).Error
 
 	if err != nil {
 		return nil, err
