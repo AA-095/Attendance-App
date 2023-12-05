@@ -18,17 +18,19 @@ func NewHistoryRepository(db *gorm.DB) repository.HistoryRepository {
 	}
 }
 
-func (s *HistoryRepoImpl) ReadAllHistory(userID int, year int) ([]model.Attendance, error) {
+func (s *HistoryRepoImpl) ReadAllHistory(useId int, year int) ([]model.Attendance, error) {
 	var activities []orm_model.Attendance
 	var res []model.Attendance
-	err := s.db.Where("user_id = ?", userID).Where("year = ?", year).Find(&activities).Error
+	err := s.db.Where("userId = ?", useId).Where("year = ?", year).Find(&activities).Error
+	
 	if err != nil {
 		return nil, err
 	}
+
 	for _, activity := range activities {
 		resItem := model.Attendance{
-			ID:             activity.ID,
-			UserID:         activity.UserID,
+			Id:             activity.Id,
+			UserId:         activity.UserId,
 			AttendanceType: model.IntToActionEnum(activity.AttendanceType),
 			Time:           activity.Time,
 			Date:           activity.Date,
@@ -38,17 +40,19 @@ func (s *HistoryRepoImpl) ReadAllHistory(userID int, year int) ([]model.Attendan
 	return res, nil
 }
 
-func (s *HistoryRepoImpl) ReadHistoryByDate(userID int, date string) ([]model.Attendance, error) {
+func (s *HistoryRepoImpl) ReadHistoryByDate(useId int, date string) ([]model.Attendance, error) {
 	var activities []orm_model.Attendance
 	var res []model.Attendance
-	err := s.db.Where("user_id = ?", userID).Where("date = ?", date).Find(&activities).Error
+	err := s.db.Where("userId = ?", useId).Where("date = ?", date).Find(&activities).Error
+
 	if err != nil {
 		return nil, err
 	}
+
 	for _, activity := range activities {
 		resItem := model.Attendance{
-			ID:             activity.ID,
-			UserID:         activity.UserID,
+			Id:             activity.Id,
+			UserId:         activity.UserId,
 			AttendanceType: model.IntToActionEnum(activity.AttendanceType),
 			Time:           activity.Time,
 			Date:           activity.Date,

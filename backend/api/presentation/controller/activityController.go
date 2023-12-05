@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 	"work-management-app/usecase"
-	"work-management-app/usecase/customErr"
 	"work-management-app/usecase/dto/request"
+	"work-management-app/utility"
 )
 
 type ActivityController interface {
@@ -171,10 +171,12 @@ func (a ActivityControllerImpl) UpdateActivity() http.HandlerFunc {
 		res, err := a.ActivityUsecase.Update(&activity)
 		if err != nil {
 			switch err.(type) {
-			case customErr.UserAuthenticationError:
+			case utility.AuthenticationError:
 				http.Error(w, err.Error(), http.StatusUnauthorized)
-			case customErr.ActivityNotFoundError:
+			case utility.NotFoundError:
 				http.Error(w, err.Error(), http.StatusNotFound)
+			case utility.BadRequestError:
+				http.Error(w, err.Error(), http.StatusBadRequest)
 			default:
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}
@@ -202,10 +204,12 @@ func (a ActivityControllerImpl) DeleteActivity() http.HandlerFunc {
 		err := a.ActivityUsecase.DeleteByActivityID(&activity)
 		if err != nil {
 			switch err.(type) {
-			case customErr.UserAuthenticationError:
+			case utility.AuthenticationError:
 				http.Error(w, err.Error(), http.StatusUnauthorized)
-			case customErr.ActivityNotFoundError:
+			case utility.NotFoundError:
 				http.Error(w, err.Error(), http.StatusNotFound)
+			case utility.ForbiddenError:
+				http.Error(w, err.Error(), http.StatusForbidden)
 			default:
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}

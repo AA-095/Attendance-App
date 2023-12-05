@@ -1,11 +1,21 @@
 "use client";
 import { Box } from "@mui/system";
 import AttendanceButton from "./registerButton";
-import { useState } from "react";
 import { Paper, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
-const AttendanceButtons = () => {
-  const [userStatus, setUserStatus] = useState("");
+type AttendanceButtonsProps = {
+  userStatus: string;
+};
+
+export const AttendanceButtons: React.FC<AttendanceButtonsProps> = ({
+  userStatus: initialUserStatus,
+}) => {
+  const [status, setStatus] = useState(initialUserStatus);
+  useEffect(() => {
+    setStatus(initialUserStatus); // 親コンポーネントからの更新を反映
+  }, [initialUserStatus]);
+
 
   return (
     <>
@@ -16,11 +26,11 @@ const AttendanceButtons = () => {
         style={{ marginBottom: "20px" }}
       >
         <Paper
-          elevation={3} // 影の強さ
+          elevation={3}
           style={{
             width: "400px",
             height: "120px",
-            borderRadius: "100px", // 角の丸み
+            borderRadius: "100px",
             color: "#862fa8",
             textAlign: "center",
             display: "flex",
@@ -30,9 +40,9 @@ const AttendanceButtons = () => {
         >
           <Typography
             variant="h3"
-            style={{ fontWeight: "bold", fontFamily: 'Arial' }}
+            style={{ fontWeight: "bold", fontFamily: "Arial" }}
           >
-            {userStatus}
+            {status}
           </Typography>
         </Paper>
       </Box>
@@ -44,13 +54,11 @@ const AttendanceButtons = () => {
         justifyContent="center"
         style={{ marginBottom: "40px" }}
       >
-        <AttendanceButton type="作業開始" userStatus={setUserStatus} />
-        <AttendanceButton type="作業終了" userStatus={setUserStatus} />
-        <AttendanceButton type="休憩開始" userStatus={setUserStatus} />
-        <AttendanceButton type="休憩終了" userStatus={setUserStatus} />
+        <AttendanceButton type="作業開始" userStatus={setStatus} />
+        <AttendanceButton type="作業終了" userStatus={setStatus} />
+        <AttendanceButton type="休憩開始" userStatus={setStatus} />
+        <AttendanceButton type="休憩終了" userStatus={setStatus} />
       </Box>
     </>
   );
 };
-
-export default AttendanceButtons;
