@@ -134,7 +134,7 @@ func (h HistoryUsecaseImpl) HistoryByDate(userKey string, date string) (*respons
 	// userKeyからuserIdを指定
 	userId, err := h.ur.FindIDByUserKey(userKey)
 	if err != nil {
-		log.Println("usr_id not found")
+		log.Println("user_id not found")
 		return nil, err
 	}
 
@@ -146,11 +146,11 @@ func (h HistoryUsecaseImpl) HistoryByDate(userKey string, date string) (*respons
 
 	var activities []response.ActivityDetail
 	for _, v := range historyByDate {
-		ID := v.Id
+		Id := v.Id
 		activityTime := v.Time
 		activityType := response.ConvertActivityTime(v.AttendanceType)
 		activity := response.ActivityDetail{
-			Id:   ID,
+			Id:   Id,
 			Type: activityType,
 			Time: activityTime,
 		}

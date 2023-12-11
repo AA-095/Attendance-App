@@ -1,9 +1,11 @@
 package repository
 
 import (
+	"fmt"
 	"work-management-app/domain/model"
 	"work-management-app/domain/repository"
 	orm_model "work-management-app/infrastructure/orm"
+
 
 	"gorm.io/gorm"
 )
@@ -21,7 +23,7 @@ func NewHistoryRepository(db *gorm.DB) repository.HistoryRepository {
 func (s *HistoryRepoImpl) ReadAllHistory(userId int, year int) ([]model.Attendance, error) {
 	var activities []orm_model.Attendance
 	var res []model.Attendance
-	err := s.db.Where("id = ?", userId).Where("year = ?", year).Find(&activities).Error
+	err := s.db.Where("user_id = ?", userId).Where("year = ?", year).Find(&activities).Error
 	
 	if err != nil {
 		return nil, err
@@ -37,13 +39,14 @@ func (s *HistoryRepoImpl) ReadAllHistory(userId int, year int) ([]model.Attendan
 		}
 		res = append(res, resItem)
 	}
+	fmt.Println(res)
 	return res, nil
 }
 
-func (s *HistoryRepoImpl) ReadHistoryByDate(useId int, date string) ([]model.Attendance, error) {
+func (s *HistoryRepoImpl) ReadHistoryByDate(userId int, date string) ([]model.Attendance, error) {
 	var activities []orm_model.Attendance
 	var res []model.Attendance
-	err := s.db.Where("id = ?", useId).Where("date = ?", date).Find(&activities).Error
+	err := s.db.Where("user_id = ?", userId).Where("date = ?", date).Find(&activities).Error
 
 	if err != nil {
 		return nil, err
@@ -59,5 +62,6 @@ func (s *HistoryRepoImpl) ReadHistoryByDate(useId int, date string) ([]model.Att
 		}
 		res = append(res, resItem)
 	}
+	fmt.Println(res)
 	return res, nil
 }

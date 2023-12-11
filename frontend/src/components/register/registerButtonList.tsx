@@ -8,15 +8,13 @@ type AttendanceButtonsProps = {
   userStatus: string;
 };
 
-const AttendanceButtons: React.FC<AttendanceButtonsProps> = ({
+export const AttendanceButtons: React.FC<AttendanceButtonsProps> = ({
   userStatus: initialUserStatus,
 }) => {
   const [status, setStatus] = useState(initialUserStatus);
   useEffect(() => {
-    setStatus(initialUserStatus); // 親コンポーネントからの更新を反映
+    setStatus(initialUserStatus); 
   }, [initialUserStatus]);
-
-
   return (
     <>
       <Box
@@ -62,5 +60,3 @@ const AttendanceButtons: React.FC<AttendanceButtonsProps> = ({
     </>
   );
 };
-
-export default AttendanceButtons;
